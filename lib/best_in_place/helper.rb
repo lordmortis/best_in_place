@@ -32,6 +32,21 @@ module BestInPlace
         display_value = value ? opts[:collection][1] : opts[:collection][0]
         collection = opts[:collection].to_json
       end
+      if opts[:type] == :date || 
+        value = real_object.send(field)
+        logger.debug "Value is of #{value.class}"
+      end
+      if opts[:type] == :datetime
+        value = real_object.send(field)
+        if value.class == ActiveSupport::TimeWithZone
+          value = value.strftime("%Y-%m-%d %H:%M")
+          display_value = value
+        end
+      end
+      if opts[:type] == :time
+        value = real_object.send(field)
+        logger.debug "Value is of #{value.class}"
+      end
       classes = ["best_in_place"]
       unless opts[:classes].nil?
         # the next three lines enable this opt to handle both a stings and a arrays
@@ -39,7 +54,7 @@ module BestInPlace
         classes.flatten!
       end
 
-      out = "<span class='#{classes.join(" ")}'"
+      out = "<span junk='junkyjunk' class='#{classes.join(" ")}'"
       out << " id='#{BestInPlace::Utils.build_best_in_place_id(real_object, field)}'"
       out << " data-url='#{opts[:path].blank? ? url_for(object) : url_for(opts[:path])}'"
       out << " data-object='#{opts[:object_name] || BestInPlace::Utils.object_to_key(real_object)}'"
