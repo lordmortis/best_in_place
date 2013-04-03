@@ -40,7 +40,7 @@ module BestInPlace
         value = real_object.send(field)
         if value.class == ActiveSupport::TimeWithZone
           value = value.strftime("%Y-%m-%d %H:%M")
-          display_value = value
+          #display_value = value
         end
       end
       if opts[:type] == :time
